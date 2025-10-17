@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sheraz Ali | Web Developer</title>
+
+  <!-- Bootstrap 5.3 (bundle includes Popper) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- AOS + Font Awesome -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* Base */
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #0a0a0a;
+      color: #fff;
+      /* anchor targets wont hide under sticky navbar */
+      scroll-padding-top: 90px;
+    }
+
+    /* Navbar */
+    .navbar-nav .nav-link { color: #fff; font-weight: 500; transition: color .3s ease; }
+    .navbar-nav .nav-link:hover { color: #00ffff; }
+    .dropdown-menu .dropdown-item:hover { background-color: #0a0a1a; color: #00ffff; }
+    .navbar .form-control { border-radius: 12px; }
+    .navbar .btn-info {
+      border-radius: 12px; padding: 8px 20px; transition: all .3s ease;
+    }
+    .navbar .btn-info:hover { background-color: #00ffff; color: #000; transform: scale(1.05); }
+
+    /* Contact fancy button (if used somewhere else) */
+    .contact-btn {
+      position: relative; padding: 15px 40px; font-size: 1.2rem; color: #fff;
+      text-transform: uppercase; letter-spacing: 2px; border: none; border-radius: 50px;
+      cursor: pointer; overflow: hidden; transition: .4s ease;
+      background: linear-gradient(270deg, #007bff, #6610f2, #00c4ff);
+      background-size: 400% 400%; animation: gradientMove 6s infinite alternate;
+      box-shadow: 0 0 15px rgba(0,123,255,.6);
+    }
+    .contact-btn:hover { transform: scale(1.08); box-shadow: 0 0 25px rgba(102,16,242,.8); }
+    .contact-btn::before {
+      content:""; position: absolute; top:0; left:-100%; width:100%; height:100%;
+      background: rgba(255,255,255,.2); transform: skewX(-20deg); transition:.5s;
+    }
+    .contact-btn:hover::before { left: 120%; }
+    @keyframes gradientMove { 0%{background-position:0% 50%} 100%{background-position:100% 50%} }
+
+    /* ===== HERO / PARTICLES (responsive, no clipping) ===== */
+    #particles {
+      position: relative;
+      width: 100%;
+      min-height: 75vh;
+      padding: clamp(64px, 8vh, 120px) 0;
+      overflow: hidden;
+    }
+    #particles canvas {
+      position: absolute; inset: 0; width: 100% !important; height: 100% !important; z-index: 1;
+    }
+    #particles .overlay {
+      position: relative; z-index: 2; height: 100%;
+      display: flex; align-items: center; justify-content: center; padding: 24px;
+    }
+    .hero-content {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px;
+    }
+    .hero-text { flex: 1 1 320px; }
+    .hero-text h1 { font-size: clamp(2rem, 4vw, 3rem); color: #00d8ff; font-weight: 700; }
+    .hero-text p { font-size: 1.05rem; margin-top: 12px; line-height: 1.7; color: #ddd; }
+    .hero-image { flex: 1 1 320px; text-align: center; }
+    .hero-image img {
+      width: min(92%, 420px); height: auto; border-radius: 20px;
+      box-shadow: 0 0 25px rgba(0,216,255,.4); transition: transform .5s;
+    }
+    .hero-image img:hover { transform: scale(1.04); }
+
+    @media (max-width: 768px) {
+      .hero-content { flex-direction: column; text-align: center; }
+    }
+
+    /* Our Team */
+    .our-team { animation: fadeIn 1.5s ease-in-out; position: relative; overflow: hidden; }
+    .team-card {
+      transition: all .5s ease; border-radius: 15px; overflow: hidden; flex: 1 1 30%; min-width: 280px;
+    }
+    .team-card:hover { transform: translateY(-10px) scale(1.03); box-shadow: 0 10px 30px rgba(0,123,255,.4); }
+    .card-img-top {
+      height: 300px; object-fit: cover; border-bottom: 3px solid #0d6efd; transition: all .4s ease;
+    }
+    .card-img-top:hover { filter: brightness(1.1); }
+    @keyframes fadeIn { 0%{opacity:0; transform:translateY(40px)} 100%{opacity:1; transform:translateY(0)} }
+    #teamParticles { position: absolute; top:0; left:0; width:100%; height:100%; z-index:0; }
+
+    /* FICER section (kept class name zenix-section for CSS compatibility) */
+    .zenix-section { position: relative; overflow: hidden; background: radial-gradient(circle at center,#020b14 40%,#000 100%); color: #fff; }
+    #sparksCanvas {
+      position: absolute; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none;
+    }
+    .zenix-section .container { position: relative; z-index: 1; }
+    .zenix-section h1 { color: #00bfff; font-weight: 700; letter-spacing: 1px; }
+    .zenix-section p { font-size: 1.1rem; line-height: 1.8; color: #dcefff; }
+
+    /* Webdev section */
+    .webdev-section { background: linear-gradient(135deg, #000, #0d0d2b); color:#fff; position: relative; }
+    .text-gradient { background: linear-gradient(90deg, #00c6ff, #0072ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .webdev-section .btn-primary { background: linear-gradient(90deg,#00c6ff,#0072ff); border: none; }
+    .webdev-section .btn-primary:hover { transform: scale(1.05); }
+    .webdev-section .card { transition: transform .4s ease, box-shadow .4s ease; }
+    .webdev-section .card:hover { transform: translateY(-8px); box-shadow: 0 10px 25px rgba(0,198,255,.4); }
+    #energyWaves2 { position:absolute; top:0; left:0; width:100%; height:100%; background: radial-gradient(ellipse at center, #0d0d0d, #000); }
+
+    /* Digital / Graphic sections shared tweaks */
+    .hover-glow { transition: all .4s ease; }
+    .hover-glow:hover { box-shadow: 0 0 25px rgba(0,123,255,.6); transform: translateY(-8px); }
+
+    /* Scrollers */
+    .scroll-wrapper { display:flex; overflow:hidden; position:relative; width:100%; white-space:nowrap; }
+    .scroll-content { display:inline-block; white-space:nowrap; animation-timing-function: linear; animation-iteration-count: infinite; }
+    .scroll-content i { margin: 0 25px; transition: transform .3s ease, color .3s ease; }
+    .scroll-content i:hover { transform: scale(1.2); color: #00ffff; }
+    .scroll-left { animation: scrollLeft 25s linear infinite; }
+    .scroll-right { animation: scrollRight 25s linear infinite; }
+    @keyframes scrollLeft { 0%{transform:translateX(0)} 100%{transform:translateX(-100%)} }
+    @keyframes scrollRight { 0%{transform:translateX(-100%)} 100%{transform:translateX(0)} }
+
+    /* Contact */
+    #contact-form input, #contact-form textarea { border-radius: 12px; padding: 15px; }
+    #contact-form button:hover { background-color: #00ffff; color: #000; transform: scale(1.05); transition: all .3s ease-in-out; }
+
+    /* Social icons */
+    .social-icon {
+      display:inline-block; width:45px; height:45px; line-height:45px; color:#fff; background:#0a0a1a;
+      border-radius:50%; font-size:18px; transition: all .3s ease;
+    }
+    .social-icon:hover { background:#00ffff; color:#000; transform: scale(1.2); }
+
+    /* Butterflies */
+    .butterfly {
+      position:absolute; width:50px; height:50px;
+      background:url('https://i.ibb.co/xG1H5MP/butterfly.png') no-repeat center/contain;
+      animation: fly 10s linear infinite; opacity:.8;
+    }
+    .butterfly1 { top:10%; left:0; animation-duration:12s; }
+    .butterfly2 { top:50%; left:0; animation-duration:18s; }
+    .butterfly3 { top:30%; left:0; animation-duration:15s; }
+    @keyframes fly {
+      0%{transform:translate(0,0) rotate(0deg)}
+      25%{transform:translate(200px,-50px) rotate(20deg)}
+      50%{transform:translate(400px,50px) rotate(-20deg)}
+      75%{transform:translate(600px,-30px) rotate(10deg)}
+      100%{transform:translate(800px,20px) rotate(0)}
+    }
+
+    /* Footer */
+    .footer-social {
+      display:flex; align-items:center; justify-content:center; width:55px; height:55px;
+      background:#0a0a1a; color:#fff; border-radius:50%; font-size:22px; transition: all .3s ease;
+    }
+    .footer-social:hover { background:#00ffff; color:#000; transform: scale(1.25); }
+    .footer-section a { text-decoration:none; color:#ccc; transition: all .3s ease; }
+    .footer-section a:hover { color:#00ffff; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top"
+       style="background: linear-gradient(90deg, #0a0a1a, #020617); box-shadow: 0 4px 8px rgba(0,0,0,0.5); z-index: 1000;">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="#particles">
+        <img src="Ficer logo.jpeg" alt="Ficer Logo" width="180" height="90" />
+        <span class="text-info fw-bold ms-2">Ficer Digital Agency</span>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+          <li class="nav-item"><a class="nav-link active mx-2" href="#particles">Home</a></li>
+          <li class="nav-item"><a class="nav-link mx-2" href="#our-team">About Our Team</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle mx-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Our Services
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="#webdev">Web Development</a></li>
+              <li><a class="dropdown-item" href="#graphic">Graphic Design</a></li>
+              <li><a class="dropdown-item" href="#digital">Digital Marketing</a></li>
+              <li><a class="dropdown-item" href="#wordpress">WordPress</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <form class="d-flex ms-lg-3 my-2 my-lg-0">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+          <button class="btn btn-outline-info" type="submit">Search</button>
+        </form>
+
+        <a href="#contact" class="btn btn-info ms-lg-3 mt-2 mt-lg-0">Contact Me</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="particles">
+    <div class="overlay">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-text">
+            <h1>I'm Ehtisham Sarwar</h1>
+            <p>
+              A passionate and results-driven <strong>Web Developer</strong> dedicated to creating
+              modern, responsive, and user-focused digital experiences. I specialize in both front-end
+              and back-end technologies — turning ideas into interactive, high-performing websites that empower brands and businesses.
+            </p>
+            <p>
+              With a focus on clean code, elegant design, and smart functionality, I craft digital experiences that inspire growth and make an impact online.
+            </p>
+          </div>
+          <div class="hero-image">
+            <img src="es1.jpg" alt="" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUR TEAM -->
+  <section id="our-team" class="our-team position-relative py-5">
+    <canvas id="teamParticles" class="position-absolute top-0 start-0 w-100 h-100" style="z-index:0;"></canvas>
+    <div class="container position-relative" style="z-index:1;">
+      <div class="row justify-content-between flex-wrap gap-3">
+        <!-- Web Developer -->
+        <div class="card team-card shadow-lg border-0 p-0 col-12 col-md-4">
+          <img src="WhatsApp Image 2025-09-19 at 22.42.38_8827a121.jpg" class="card-img-top" alt="Web Developer" />
+          <div class="card-body text-center">
+            <h5 class="card-title text-primary fw-bold">Web Developer</h5>
+            <h5 class="card-title">Sheraz Ali</h5>
+            <p class="card-text">I create modern, responsive, and high-performing websites that combine stunning design with seamless functionality.</p>
+            <p class="card-text text-info fw-bold">Contact with Developer</p>
+            <a class="text-decoration-none text-warning d-block" href="https://wa.me/923131006067" target="_blank">Message on WhatsApp</a>
+            <a class="text-decoration-none text-warning" href="mailto:sherazofficialdev@gmail.com">Send Email</a>
+          </div>
+        </div>
+        <!-- Graphic Designer -->
+        <div class="card team-card shadow-lg border-0 p-0 col-12 col-md-4">
+          <img src="download (1).jpeg" class="card-img-top img-thumbnail" alt="Graphic Designer" />
+          <div class="card-body text-center">
+            <h5 class="card-title text-primary fw-bold">Graphic Designer</h5>
+            <h5 class="card-title">Muhammad Shafiq</h5>
+            <p class="card-text">I design creative and visually appealing graphics that capture attention and communicate your brand’s message effectively.</p>
+            <p class="card-text text-info fw-bold">Contact with Graphic Designer</p>
+            <a class="text-decoration-none text-warning d-block" href="https://wa.me/923131006067" target="_blank">Message on WhatsApp</a>
+            <a class="text-decoration-none text-warning" href="mailto:sherazofficialdev@gmail.com">Send Email</a>
+          </div>
+        </div>
+        <!-- Digital Marketer -->
+        <div class="card team-card shadow-lg border-0 p-0 col-12 col-md-4">
+          <img src="download.jpeg" class="card-img-top" alt="Digital Marketer" />
+          <div class="card-body text-center">
+            <h5 class="card-title text-primary fw-bold">Digital Marketer</h5>
+            <h5 class="card-title">Haris Aziz</h5>
+            <p class="card-text">I help businesses grow by creating powerful online marketing strategies that boost visibility and engagement.</p>
+            <p class="card-text text-info fw-bold">Contact with Digital Marketer</p>
+            <a class="text-decoration-none text-warning d-block" href="https://wa.me/923131006067" target="_blank">Message on WhatsApp</a>
+            <a class="text-decoration-none text-warning" href="mailto:sherazofficialdev@gmail.com">Send Email</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row justify-content-between flex-wrap gap-3 mt-5 pt-3">
+        <!-- WordPress Developer -->
+        <div class="card team-card shadow-lg border-0 p-0 col-12 col-md-4">
+          <img src="Muzzamil.jpg" class="card-img-top" alt="" />
+          <div class="card-body text-center">
+            <h5 class="card-title text-primary fw-bold">WordPress Developer</h5>
+            <h5 class="card-title">Muhammad Muzammil</h5>
+            <p class="card-text">I design and develop modern, responsive WordPress websites that elevate your brand and drive results.</p>
+            <p class="card-text text-info fw-bold">Contact with WordPress Developer</p>
+            <a class="text-decoration-none text-warning d-block" href="https://wa.me/923131006067" target="_blank">Message on WhatsApp</a>
+            <a class="text-decoration-none text-warning" href="mailto:sherazofficialdev@gmail.com">Send Email</a>
+          </div>
+        </div>
+        <!-- Web Developer -->
+        <div class="card team-card shadow-lg border-0 p-0 col-12 col-md-4">
+          <img src="es1.jpg" class="card-img-top" alt="" />
+          <div class="card-body text-center">
+            <h5 class="card-title text-primary fw-bold">Web Developer</h5>
+            <h5 class="card-title">Ehtisham Sarwar</h5>
+            <p class="card-text">I create modern, responsive, and high-performing websites that combine stunning design with seamless functionality.</p>
+            <p class="card-text text-info fw-bold">Contact with Full-Stack Developer</p>
+            <a class="text-decoration-none text-warning d-block" href="https://wa.me/923131006067" target="_blank">Message on WhatsApp</a>
+            <a class="text-decoration-none text-warning" href="mailto:sherazofficialdev@gmail.com">Send Email</a>
+          </div>
+        </div>
+        <!-- Web Developer -->
+        <div class="card team-card shadow-lg border-0 p-0 col-12 col-md-4">
+          <img src="image.png" class="card-img-top" alt="YouTube Manager" />
+          <div class="card-body text-center">
+            <h5 class="card-title text-primary fw-bold">Web Developer</h5>
+            <h5 class="card-title">Rana Jawad</h5>
+            <p class="card-text">I develop modern, responsive websites that deliver exceptional performance and a flawless user experience.</p>
+            <p class="card-text text-info fw-bold">Contact with Web Developer</p>
+            <a class="text-decoration-none text-warning d-block" href="https://wa.me/923131006067" target="_blank">Message on WhatsApp</a>
+            <a class="text-decoration-none text-warning" href="mailto:sherazofficialdev@gmail.com">Send Email</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FICER AGENCY -->
+  <section class="zenix-section py-5">
+    <canvas id="sparksCanvas"></canvas>
+    <div class="container">
+      <div class="row align-items-center text-center text-md-start">
+        <div class="col-md-6 mb-4 mb-md-0" data-aos="zoom-in" data-aos-duration="1200">
+          <img src="download.png" alt="" class="img-fluid rounded shadow-lg" style="max-width: 90%;" />
+        </div>
+        <div class="col-md-6" data-aos="fade-left" data-aos-duration="1200">
+          <h1 class="mb-4">FICER AGENCY</h1>
+          <p>
+            Ficer is a full-service digital agency dedicated to delivering innovative global solutions. Our team of expert
+            <b>web developers, graphic designers, digital marketers, and video editors</b> work together to create powerful online presences for brands and businesses.
+            We also specialize in <b>YouTube channel management</b>. At <b>Ficer</b>, creativity meets technology — turning your vision into a digital reality that drives success.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WEB DEV -->
+  <section id="webdev" class="webdev-section py-5 position-relative overflow-hidden">
+    <canvas id="energyWaves2"></canvas>
+    <div class="container position-relative text-light h-100 d-flex align-items-center mb-5 pb-5">
+      <div class="row w-100 align-items-center flex-wrap-reverse">
+        <div class="col-md-6" data-aos="fade-right">
+          <h2 class="fw-bold mb-3 text-gradient">Professional Web Developer</h2>
+          <p class="lead mb-0">
+            Our skilled <strong>Web Developers</strong> at <strong>Ficer Agency</strong> specialize in building responsive, high-performing, and visually stunning websites.
+            From front-end design to back-end functionality — we turn your vision into reality.
+          </p>
+        </div>
+        <div class="col-md-6 text-center" data-aos="fade-left">
+          <img src="WhatsApp Image 2025-10-15 at 21.55.41_4999532a.jpg" alt="Web Developer" class="img-fluid rounded-4 shadow-lg" style="max-height: 250px; object-fit: cover;" />
+        </div>
+      </div>
+    </div>
+
+    <div class="container position-relative text-light">
+      <div class="row g-4">
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+          <div class="card bg-dark text-light border-0 shadow-lg h-100 text-center rounded-4">
+            <img src="portfolio.jpg" class="card-img-top rounded-top-4" alt="Demo 1" />
+            <div class="card-body">
+              <h5 class="card-title mb-3">Portfolio Website</h5>
+              <a href="https://sherazofficialdeveloper.github.io/port/" class="btn btn-primary px-4">View Demo</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+          <div class="card bg-dark text-light border-0 shadow-lg h-100 text-center rounded-4">
+            <img src="bussines.jpg" class="card-img-top rounded-top-4" alt="Demo 2" />
+            <div class="card-body">
+              <h5 class="card-title mb-3">Business Website</h5>
+              <a href="https://preview.themeforest.net/item/nah-multipurpose-construction-responsive-html5-template/full_screen_preview/16603461" class="btn btn-primary px-4">View Demo</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
+          <div class="card bg-dark text-light border-0 shadow-lg h-100 text-center rounded-4">
+            <img src="e-comirece.jpg" class="card-img-top rounded-top-4" alt="Demo 3" />
+            <div class="card-body">
+              <h5 class="card-title mb-3">E-commerce Website</h5>
+              <a href="https://preview.themeforest.net/item/dukkanweb-ecommerce-website-template-using-bootstrap/full_screen_preview/31848871" class="btn btn-primary px-4">View Demo</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIGITAL -->
+  <section id="digital" class="digital-section py-5 position-relative overflow-hidden text-light" style="background: radial-gradient(circle at top, #0a0a25, #000);">
+  <canvas id="digitalWaves" class="position-absolute top-0 start-0 w-100 h-100"></canvas>
+  <div class="container position-relative" style="z-index:1;">
+    <div class="row align-items-center mb-5 flex-wrap-reverse">
+      <div class="col-md-6" data-aos="fade-right">
+        <h2 class="fw-bold mb-3 text-gradient">Professional Digital Marketing</h2>
+        <p class="lead mb-4">We create data-driven marketing plans that increase visibility, boost engagement, and convert your audience into loyal customers.</p>
+        <a href="#contact" class="btn btn-primary px-4 fw-bold shadow">Learn More</a>
+      </div>
+      <div class="col-md-6 text-center" data-aos="fade-left">
+        <img src="download.jpeg" alt="Digital Marketing" class="img-fluid rounded-4 shadow-lg" style="max-height:300px; object-fit:cover;" />
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+        <div class="card bg-dark text-light border-0 shadow-lg h-100 text-center rounded-4">
+          <div class="card-body">
+            <h5 class="card-title mb-3 text-primary">Social Media Marketing</h5>
+            <p class="small mb-0">We manage and grow your online presence across platforms like Facebook, Instagram, and LinkedIn with creative strategies and audience engagement.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+        <div class="card bg-dark text-light border-0 shadow-lg h-100 text-center rounded-4">
+          <div class="card-body">
+            <h5 class="card-title mb-3 text-primary">SEO Optimization</h5>
+            <p class="small mb-0">Boost your website ranking on Google with optimized keywords, content strategies, and backlinks that drive organic traffic.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
+        <div class="card bg-dark text-light border-0 shadow-lg h-100 text-center rounded-4">
+          <div class="card-body">
+            <h5 class="card-title mb-3 text-primary">Google & Meta Ads</h5>
+            <p class="small mb-0">We create and manage high-converting ad campaigns on Google and Meta to increase your reach, clicks, and conversions effectively.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+  <!-- GRAPHIC -->
+ <section id="graphic" class="graphic-section py-5 position-relative overflow-hidden text-light" style="background: linear-gradient(to bottom right, #090a1a, #02050a);">
+  <canvas id="designerWaves" class="position-absolute top-0 start-0 w-100 h-100"></canvas>
+  <div class="container position-relative" style="z-index:1;">
+    <div class="row align-items-center flex-wrap-reverse mb-5">
+      <div class="col-md-6" data-aos="fade-right">
+        <h2 class="fw-bold mb-3 text-gradient">Creative Graphic Designer</h2>
+        <p class="lead mb-4">From brand logos to posters and social media creatives — we design visuals that elevate your brand identity with precision and style.</p>
+        <a href="#contact" class="btn btn-primary px-4 fw-bold shadow">Learn More</a>
+      </div>
+      <div class="col-md-6 text-center" data-aos="fade-left">
+        <img src="download (1).jpeg" alt="Graphic Designer" class="img-fluid rounded-4 shadow-lg" style="max-height:300px; object-fit:cover;" />
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+        <div class="card bg-dark text-light border-0 shadow-lg h-100 text-center rounded-4">
+          <div class="card-body">
+            <h5 class="card-title mb-3 text-primary">Logo & Brand Design</h5>
+            <p class="small mb-0">We create unique and memorable brand logos that represent your business identity and connect with your audience instantly.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+        <div class="card bg-dark text-light border-0 shadow-lg h-100 text-center rounded-4">
+          <div class="card-body">
+            <h5 class="card-title mb-3 text-primary">Posters & Banners</h5>
+            <p class="small mb-0">Eye-catching posters and banners designed for marketing campaigns, product launches, and events with professional impact.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
+        <div class="card bg-dark text-light border-0 shadow-lg h-100 text-center rounded-4">
+          <div class="card-body">
+            <h5 class="card-title mb-3 text-primary">Social Media Creatives</h5>
+            <p class="small mb-0">Engaging social media designs that enhance your online presence and keep your audience connected and inspired.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- VIDEO EDITING -->
+  <section id="video" class="animation-showcase-section py-5 position-relative overflow-hidden text-light" style="background: radial-gradient(circle at top, #0a0a25, #000);">
+    <canvas id="animParticles" class="position-absolute top-0 start-0 w-100 h-100"></canvas>
+    <div class="container position-relative" style="z-index:1;">
+      <div class="text-center mb-5" data-aos="fade-up">
+        <h2 class="fw-bold mb-3 text-gradient">Cartoon & Robot Animation Showcase</h2>
+        <p class="lead mx-auto" style="max-width: 700px;">Watch some of our animated works — from 2D cartoons and robot characters to creative motion scenes.</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-3 col-sm-6" data-aos="zoom-in">
+          <h6 class="text-center mb-2">Robot Short Film</h6>
+          <div class="ratio ratio-16x9 rounded-4 shadow-lg overflow-hidden">
+            <iframe src="https://www.youtube.com/embed/0-aaUwiacxY" title="Robot Overcomes Fears" allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="100">
+          <h6 class="text-center mb-2">2D Robot Cartoon</h6>
+          <div class="ratio ratio-16x9 rounded-4 shadow-lg overflow-hidden">
+            <iframe src="https://www.youtube.com/embed/aiH6qiy8uUA" title="2D Animation Robot" allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="200">
+          <h6 class="text-center mb-2">Robot Cartoon</h6>
+          <div class="ratio ratio-16x9 rounded-4 shadow-lg overflow-hidden">
+            <iframe src="https://www.youtube.com/embed/T-RdFpW2gCw" title="Robot Dance Competition" allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="300">
+          <h6 class="text-center mb-2">Lost & Found Robot</h6>
+          <div class="ratio ratio-16x9 rounded-4 shadow-lg overflow-hidden">
+            <iframe src="https://www.youtube.com/embed/PiQ_osl1EL0" title="Robot Lost and Found" allowfullscreen></iframe>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="400">
+          <h6 class="text-center mb-2">Cartoon Series</h6>
+          <div class="ratio ratio-16x9 rounded-4 shadow-lg overflow-hidden">
+            <iframe src="https://www.youtube.com/embed/Q2mpH2HAjbU" title="Cartoon Robot Tower" allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="500">
+          <h6 class="text-center mb-2">Animation Demo</h6>
+          <div class="ratio ratio-16x9 rounded-4 shadow-lg overflow-hidden">
+            <iframe src="https://www.youtube.com/embed/ObU7D9GAVuE" title="Animation Demo" allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="600">
+          <h6 class="text-center mb-2">Logo Animation</h6>
+          <div class="ratio ratio-16x9 rounded-4 shadow-lg overflow-hidden">
+            <iframe src="https://www.youtube.com/embed/aqz-KE-bpKQ" title="Logo Reveal" allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="700">
+          <h6 class="text-center mb-2">Promo Animation</h6>
+          <div class="ratio ratio-16x9 rounded-4 shadow-lg overflow-hidden">
+            <iframe src="https://www.youtube.com/embed/LXb3EKWsInQ" title="Promo Video" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WordPredd -->
+  <section id="wordpress" class="wordpress-section py-5 position-relative overflow-hidden text-light" style="background: linear-gradient(to bottom right, #090a1a, #02050a);">
+  <canvas id="wpParticles"></canvas>
+  <div class="container position-relative" style="z-index:1;">
+    <div class="row align-items-center flex-wrap-reverse mb-5">
+      <div class="col-md-6" data-aos="fade-right">
+        <h2 class="fw-bold text-gradient mb-3">WordPress Development & Custom Design</h2>
+        <p class="lead mb-4">We design and develop modern, responsive WordPress websites that elevate your brand, boost performance, and deliver exceptional user experience.</p>
+        <a href="#contact" class="btn btn-info px-4 fw-bold shadow">Learn More</a>
+      </div>
+      <div class="col-md-6 text-center" data-aos="fade-left">
+        <img src="Muzzamil.jpg" alt="WordPress Development" class="img-fluid rounded-4 shadow-lg" style="max-height:300px; object-fit:cover;" />
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-3 col-sm-6" data-aos="zoom-in">
+        <div class="card bg-dark text-light border-0 shadow-lg h-100 text-center rounded-4">
+          <div class="card-body">
+            <h5 class="card-title text-info mb-3">Custom Website Design</h5>
+            <p class="small">We craft unique, brand-focused WordPress designs tailored for your business goals.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="100">
+        <div class="card bg-dark text-light border-0 shadow-lg h-100 text-center rounded-4">
+          <div class="card-body">
+            <h5 class="card-title text-info mb-3">E-Commerce Solutions</h5>
+            <p class="small">Build online stores with WooCommerce — easy to manage, secure, and scalable.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="200">
+        <div class="card bg-dark text-light border-0 shadow-lg h-100 text-center rounded-4">
+          <div class="card-body">
+            <h5 class="card-title text-info mb-3">SEO Optimization</h5>
+            <p class="small">Boost your site’s ranking with WordPress SEO setup and keyword optimization.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6" data-aos="zoom-in" data-aos-delay="300">
+        <div class="card bg-dark text-light border-0 shadow-lg h-100 text-center rounded-4">
+          <div class="card-body">
+            <h5 class="card-title text-info mb-3">Speed & Security</h5>
+            <p class="small">Enhance loading speed, tighten security, and ensure smooth WordPress performance.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- SKILLS MARQUEES -->
+  <section class="skills-section py-5 text-light" style="background: radial-gradient(circle at center, #0a0a1a, #000); overflow:hidden;">
+    <div class="container text-center">
+      <div class="skill-category mb-5">
+        <h3 class="fw-bold mb-4 text-info">Web Development</h3>
+        <div class="scroll-wrapper">
+          <div class="scroll-content scroll-left fs-1">
+            <i class="fab fa-html5 text-danger"></i><i class="fab fa-css3-alt text-primary"></i><i class="fab fa-js text-warning"></i>
+            <i class="fab fa-bootstrap"></i><i class="fab fa-react"></i><i class="fab fa-node-js"></i><i class="fab fa-python"></i>
+            <i class="fab fa-php"></i><i class="fab fa-figma"></i><i class="fab fa-wordpress"></i><i class="fab fa-github"></i>
+            <i class="fab fa-angular"></i><i class="fab fa-vuejs"></i><i class="fab fa-docker"></i>
+          </div>
+          <div class="scroll-content scroll-left fs-1">
+            <i class="fab fa-html5 text-danger"></i><i class="fab fa-css3-alt text-primary"></i><i class="fab fa-js text-warning"></i>
+            <i class="fab fa-bootstrap"></i><i class="fab fa-react"></i><i class="fab fa-node-js"></i><i class="fab fa-python"></i>
+            <i class="fab fa-php"></i><i class="fab fa-figma"></i><i class="fab fa-wordpress"></i><i class="fab fa-github"></i>
+            <i class="fab fa-angular"></i><i class="fab fa-vuejs"></i><i class="fab fa-docker"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-category mb-5">
+        <h3 class="fw-bold mb-4 text-success">Digital Marketing</h3>
+        <div class="scroll-wrapper">
+          <div class="scroll-content scroll-right fs-1">
+            <i class="fab fa-google"></i><i class="fab fa-facebook"></i><i class="fab fa-instagram"></i><i class="fab fa-linkedin"></i>
+            <i class="fab fa-tiktok"></i><i class="fas fa-chart-line"></i><i class="fas fa-bullhorn"></i><i class="fas fa-envelope-open-text"></i>
+            <i class="fab fa-canva"></i><i class="fas fa-ad"></i><i class="fas fa-magnet"></i><i class="fas fa-users"></i><i class="fas fa-comment-dots"></i>
+          </div>
+          <div class="scroll-content scroll-right fs-1">
+            <i class="fab fa-google"></i><i class="fab fa-facebook"></i><i class="fab fa-instagram"></i><i class="fab fa-linkedin"></i>
+            <i class="fab fa-tiktok"></i><i class="fas fa-chart-line"></i><i class="fas fa-bullhorn"></i><i class="fas fa-envelope-open-text"></i>
+            <i class="fab fa-canva"></i><i class="fas fa-ad"></i><i class="fas fa-magnet"></i><i class="fas fa-users"></i><i class="fas fa-comment-dots"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-category mb-5">
+        <h3 class="fw-bold mb-4 text-warning">Graphic Design</h3>
+        <div class="scroll-wrapper">
+          <div class="scroll-content scroll-left fs-1">
+            <i class="fab fa-adobe"></i><i class="fas fa-pen-nib"></i><i class="fab fa-canva"></i><i class="fab fa-dribbble"></i><i class="fab fa-behance"></i>
+            <i class="fas fa-palette"></i><i class="fas fa-brush"></i><i class="fas fa-layer-group"></i><i class="fas fa-image"></i><i class="fas fa-pencil-ruler"></i><i class="fas fa-vector-square"></i>
+          </div>
+          <div class="scroll-content scroll-left fs-1">
+            <i class="fab fa-adobe"></i><i class="fas fa-pen-nib"></i><i class="fab fa-canva"></i><i class="fab fa-dribbble"></i><i class="fab fa-behance"></i>
+            <i class="fas fa-palette"></i><i class="fas fa-brush"></i><i class="fas fa-layer-group"></i><i class="fas fa-image"></i><i class="fas fa-pencil-ruler"></i><i class="fas fa-vector-square"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-category mb-5">
+        <h3 class="fw-bold mb-4 text-danger">Video Editing</h3>
+        <div class="scroll-wrapper">
+          <div class="scroll-content scroll-right fs-1">
+            <i class="fab fa-youtube"></i><i class="fab fa-adobe"></i><i class="fas fa-film"></i><i class="fas fa-photo-video"></i><i class="fas fa-magic"></i>
+            <i class="fas fa-scissors"></i><i class="fas fa-video"></i><i class="fas fa-play"></i><i class="fas fa-adjust"></i><i class="fas fa-lightbulb"></i>
+          </div>
+          <div class="scroll-content scroll-right fs-1">
+            <i class="fab fa-youtube"></i><i class="fab fa-adobe"></i><i class="fas fa-film"></i><i class="fas fa-photo-video"></i><i class="fas fa-magic"></i>
+            <i class="fas fa-scissors"></i><i class="fas fa-video"></i><i class="fas fa-play"></i><i class="fas fa-adjust"></i><i class="fas fa-lightbulb"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <canvas id="skillsParticles" class="position-absolute top-0 start-0 w-100 h-100" style="z-index:0;"></canvas>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact-section py-5 position-relative" style="background: radial-gradient(circle at center, #020617, #000); color: #fff; overflow: hidden;">
+    <div class="butterfly butterfly1"></div>
+    <div class="butterfly butterfly2"></div>
+    <div class="butterfly butterfly3"></div>
+
+    <div class="container text-center position-relative" style="z-index:1;">
+      <h2 class="fw-bold text-info mb-4">Get in Touch</h2>
+      <p class="text-secondary mb-5">Have a question or want to start a project? Send us a message — we’d love to hear from you!</p>
+
+      <div class="mb-4">
+        <a href="https://facebook.com/" target="_blank" class="social-icon me-3"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://wa.me/your-number" target="_blank" class="social-icon me-3"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://linkedin.com/" target="_blank" class="social-icon me-3"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://twitter.com/" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <form id="contact-form" class="p-4 rounded shadow-lg" style="background:#0a0a1a;">
+            <div class="mb-3 text-start">
+              <label for="name" class="form-label text-info fw-bold">Name</label>
+              <input type="text" id="name" name="from_name" class="form-control form-control-lg bg-dark text-light border-0" placeholder="Your Name" required />
+            </div>
+            <div class="mb-3 text-start">
+              <label for="email" class="form-label text-info fw-bold">Email</label>
+              <input type="email" id="email" name="reply_to" class="form-control form-control-lg bg-dark text-light border-0" placeholder="Your Email" required />
+            </div>
+            <div class="mb-3 text-start">
+              <label for="subject" class="form-label text-info fw-bold">Subject</label>
+              <input type="text" id="subject" name="subject" class="form-control form-control-lg bg-dark text-light border-0" placeholder="Subject" required />
+            </div>
+            <div class="mb-3 text-start">
+              <label for="message" class="form-label text-info fw-bold">Message</label>
+              <textarea id="message" name="message" class="form-control form-control-lg bg-dark text-light border-0" placeholder="Your Message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-info btn-lg px-5">Send Message</button>
+            <p id="status" class="mt-3"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer-section position-relative py-5" style="background: radial-gradient(circle at center, #020617, #000); color: #fff; overflow: hidden;">
+    <div class="container position-relative" style="z-index:1;">
+      <div class="row text-center text-md-start">
+        <div class="col-md-4 mb-4">
+          <h5 class="text-info fw-bold mb-3">About Us</h5>
+          <p class="text-secondary">We are a creative Ficer digital agency specializing in web development, graphic design, and marketing solutions.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h5 class="text-info fw-bold mb-3">Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="#particles" class="text-secondary text-decoration-none">Home</a></li>
+            <li><a href="#webdev" class="text-secondary text-decoration-none">Services</a></li>
+            <li><a href="#video" class="text-secondary text-decoration-none">Portfolio</a></li>
+            <li><a href="#contact" class="text-secondary text-decoration-none">Contact</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h5 class="text-info fw-bold mb-3">Follow Us</h5>
+          <div class="d-flex justify-content-center justify-content-md-start gap-3">
+            <a href="https://facebook.com/" target="_blank" class="footer-social"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://wa.me/your-number" target="_blank" class="footer-social"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://linkedin.com/" target="_blank" class="footer-social"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://twitter.com/" target="_blank" class="footer-social"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+      </div>
+      <hr class="border-secondary" />
+      <div class="text-center text-secondary">&copy; 2025 Ficer Digital Agency. All Rights Reserved.</div>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <!-- Close mobile nav on click -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const navbarCollapse = document.querySelector('.navbar-collapse');
+      document.querySelectorAll('.navbar-collapse .nav-link, .dropdown-item').forEach(link => {
+        link.addEventListener('click', () => {
+          if (navbarCollapse.classList.contains('show')) {
+            new bootstrap.Collapse(navbarCollapse).hide();
+          }
+        });
+      });
+    });
+  </script>
+
+  <!-- EmailJS (place your keys) -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function(){ emailjs.init("YOUR_PUBLIC_KEY"); })();
+
+    document.getElementById('contact-form').addEventListener('submit', function(e){
+      e.preventDefault();
+
+      // Use emailjs.send or sendForm. Here we call send with object fields.
+      emailjs.send("YOUR_SERVICE_ID","YOUR_TEMPLATE_ID",{
+        from_name: document.getElementById("name").value,
+        reply_to: document.getElementById("email").value,
+        subject: document.getElementById("subject").value,
+        message: document.getElementById("message").value
+      }).then(function(){
+        document.getElementById("status").innerHTML = "✅ Message sent successfully!";
+        document.getElementById('contact-form').reset();
+      }, function(err){
+        console.error('EmailJS error:', err);
+        document.getElementById("status").innerHTML = "❌ Failed to send message. Try again!";
+      });
+    });
+  </script>
+
+  <!-- AOS init -->
+  <script>AOS.init();</script>
+
+  <!-- Particles in HERO: sized to container (no clipping) -->
+  <script>
+    (function(){
+      const container = document.getElementById('particles');
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      container.appendChild(canvas);
+
+      function size(){
+        canvas.width = container.clientWidth;
+        canvas.height = container.clientHeight;
+      }
+      window.addEventListener('resize', size); size();
+
+      const particles = [];
+      for(let i=0;i<200;i++){
+        particles.push({
+          x: Math.random()*canvas.width,
+          y: Math.random()*canvas.height,
+          dx: (Math.random()-0.5)*1.4,
+          dy: (Math.random()-0.5)*1.4,
+          r: Math.random()*2+0.8
+        });
+      }
+      function draw(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle='rgba(255,255,255,0.9)';
+        for(const p of particles){
+          ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+          p.x+=p.dx; p.y+=p.dy;
+          if(p.x<0||p.x>canvas.width) p.dx*=-1;
+          if(p.y<0||p.y>canvas.height) p.dy*=-1;
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+  </script>
+
+  <!-- Team gradient waves -->
+  <script>
+    (function(){
+      const canvas = document.getElementById("teamParticles");
+      const ctx = canvas.getContext("2d");
+      let w, h, t = 0;
+      function resize(){
+        w = canvas.width = window.innerWidth;
+        const sec = document.getElementById("our-team");
+        h = canvas.height = sec ? sec.offsetHeight : 400;
+      }
+      window.addEventListener("resize", resize); resize();
+      function draw(){
+        t += 0.015; ctx.clearRect(0,0,w,h);
+        const g1 = ctx.createLinearGradient(0,0,w,h);
+        g1.addColorStop(0, `hsl(${(t*50)%360},70%,60%)`);
+        g1.addColorStop(1, `hsl(${(t*50+120)%360},70%,60%)`);
+        ctx.fillStyle = g1; ctx.fillRect(0,0,w,h);
+        ctx.beginPath();
+        for (let x=0; x<w; x++){
+          const y = h/2 + Math.sin(x*0.01 + t) * 40 + Math.sin(x*0.02 + t*2) * 20;
+          ctx.lineTo(x, y);
+        }
+        ctx.lineWidth = 2; ctx.strokeStyle = "rgba(255,255,255,0.2)"; ctx.stroke();
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+  </script>
+
+  <!-- FICER sparks -->
+  <script>
+    (function(){
+      const canvas = document.getElementById("sparksCanvas");
+      const ctx = canvas.getContext("2d");
+      let sparks = [];
+      function size(){
+        canvas.width = window.innerWidth;
+        const sec = document.querySelector(".zenix-section");
+        canvas.height = sec ? sec.offsetHeight : 400;
+      }
+      window.addEventListener("resize", size); size();
+
+      function mk(){ return {
+        x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+        vx:(Math.random()-0.5)*2, vy:(Math.random()-0.5)*2,
+        life: Math.random()*60+40, size: Math.random()*2+1,
+        color: `hsl(${Math.random()*60+190},100%,60%)`
+      };}
+
+      function loop(){
+        ctx.fillStyle="rgba(0,0,0,0.1)"; ctx.fillRect(0,0,canvas.width,canvas.height);
+        for (let i=sparks.length-1; i>=0; i--){
+          const s=sparks[i]; s.x+=s.vx; s.y+=s.vy; s.life--;
+          if (s.life<=0){ sparks.splice(i,1); continue; }
+          ctx.beginPath(); ctx.arc(s.x,s.y,s.size,0,Math.PI*2);
+          ctx.fillStyle=s.color; ctx.shadowBlur=20; ctx.shadowColor=s.color; ctx.fill();
+          ctx.shadowBlur=0; ctx.shadowColor="transparent";
+        }
+        while (sparks.length<50) sparks.push(mk());
+        requestAnimationFrame(loop);
+      }
+      loop();
+    })();
+  </script>
+
+  <!-- Webdev energy waves -->
+  <script>
+    (function(){
+      const canvas = document.getElementById('energyWaves2');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w, h, particles = [];
+      function resize(){
+        w = canvas.width = window.innerWidth;
+        const sec = document.querySelector(".webdev-section");
+        h = canvas.height = sec ? sec.offsetHeight : 500;
+      }
+      window.addEventListener('resize', resize); resize();
+      for (let i=0;i<80;i++){
+        particles.push({
+          x: Math.random()*w, y: Math.random()*h, size: Math.random()*2+1,
+          vx:(Math.random()-0.5)*0.6, vy:(Math.random()-0.5)*0.6,
+          color:`hsla(${Math.random()*60+180},100%,60%,0.8)`
+        });
+      }
+      function animate(){
+        ctx.clearRect(0,0,w,h);
+        const gradient = ctx.createLinearGradient(0,0,w,h);
+        gradient.addColorStop(0,"rgba(0,100,255,0.05)"); gradient.addColorStop(1,"rgba(0,200,255,0.05)");
+        ctx.fillStyle = gradient; ctx.fillRect(0,0,w,h);
+        for (const p of particles){
+          ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+          ctx.fillStyle = p.color; ctx.shadowBlur=20; ctx.shadowColor=p.color; ctx.fill();
+          p.x+=p.vx; p.y+=p.vy;
+          if(p.x<0||p.x>w) p.vx*=-1; if(p.y<0||p.y>h) p.vy*=-1;
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+  </script>
+
+  <!-- Anim particles (video) -->
+  <script>
+    (function(){
+      const canvas = document.getElementById('animParticles');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w,h, ps=[];
+      function size(){ w=canvas.width=canvas.offsetWidth; h=canvas.height=canvas.offsetHeight; }
+      window.addEventListener('resize', size); size();
+      for(let i=0;i<100;i++){
+        ps.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.5,dx:(Math.random()-0.5)*0.4,dy:(Math.random()-0.5)*0.4,color:`hsla(${Math.random()*360},100%,75%,0.6)`});
+      }
+      function loop(){
+        ctx.clearRect(0,0,w,h);
+        for(const p of ps){
+          ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+          ctx.fillStyle=p.color; ctx.shadowBlur=10; ctx.shadowColor=p.color; ctx.fill();
+          p.x+=p.dx; p.y+=p.dy; if(p.x<0||p.x>w) p.dx*=-1; if(p.y<0||p.y>h) p.dy*=-1;
+        }
+        requestAnimationFrame(loop);
+      }
+      loop();
+    })();
+  </script>
+
+  <!-- Digital bubbles -->
+  <script>
+    (function(){
+      const canvas = document.getElementById('digitalWaves');
+      const ctx = canvas.getContext('2d');
+      let w,h, circles=[];
+      function size(){ w=canvas.width=canvas.offsetWidth; h=canvas.height=canvas.offsetHeight; }
+      window.addEventListener('resize', size); size();
+      for(let i=0;i<60;i++){
+        circles.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*3+1,s:Math.random()*0.4+0.2,color:`hsla(${Math.random()*360},80%,60%,0.7)`});
+      }
+      function loop(){
+        ctx.clearRect(0,0,w,h);
+        circles.forEach(c=>{
+          ctx.beginPath(); ctx.arc(c.x,c.y,c.r,0,Math.PI*2);
+          ctx.fillStyle=c.color; ctx.shadowBlur=15; ctx.shadowColor=c.color; ctx.fill();
+          c.y -= c.s; if(c.y < -10){ c.y = h + 10; c.x = Math.random()*w; }
+        });
+        requestAnimationFrame(loop);
+      }
+      loop();
+    })();
+  </script>
+
+  <!-- Designer waves -->
+  <script>
+    (function(){
+      const canvas = document.getElementById('designerWaves');
+      const ctx = canvas.getContext('2d');
+      let w,h,t=0;
+      function size(){ w=canvas.width=canvas.offsetWidth; h=canvas.height=canvas.offsetHeight; }
+      window.addEventListener('resize', size); size();
+      function wave(y0,color,amp,freq,speed){
+        ctx.beginPath();
+        for(let x=0;x<w;x++){ const y=Math.sin((x*freq)+t*speed)*amp+y0; ctx.lineTo(x,y); }
+        ctx.strokeStyle=color; ctx.lineWidth=2; ctx.stroke();
+      }
+      function loop(){
+        ctx.clearRect(0,0,w,h);
+        let g=ctx.createLinearGradient(0,0,w,h);
+        g.addColorStop(0,"rgba(255,0,150,0.2)"); g.addColorStop(0.5,"rgba(0,150,255,0.2)"); g.addColorStop(1,"rgba(255,255,0,0.2)");
+        ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
+        wave(h/2,"rgba(255,0,150,0.5)",30,0.01,0.05);
+        wave(h/2+20,"rgba(0,150,255,0.5)",25,0.012,0.06);
+        wave(h/2-20,"rgba(255,255,0,0.5)",20,0.009,0.04);
+        t+=0.02; requestAnimationFrame(loop);
+      }
+      loop();
+    })();
+  </script>
+
+  <!-- Skills particles -->
+  <script>
+    (function(){
+      const canvas = document.getElementById('skillsParticles');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w,h, ps=[];
+      function size(){ w=canvas.width=window.innerWidth; h=canvas.height=400; }
+      window.addEventListener('resize', size); size();
+      for(let i=0;i<60;i++){
+        ps.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2,dx:(Math.random()-0.5)*0.5,dy:(Math.random()-0.5)*0.5,color:`rgba(${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},255,0.3)`});
+      }
+      function loop(){
+        ctx.clearRect(0,0,w,h);
+        for(const p of ps){
+          ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=p.color; ctx.fill();
+          p.x+=p.dx; p.y+=p.dy; if(p.x<0||p.x>w) p.dx*=-1; if(p.y<0||p.y>h) p.dy*=-1;
+        }
+        requestAnimationFrame(loop);
+      }
+        loop();
+    })();
+  </script>
+
+</body>
+</html>
